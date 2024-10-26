@@ -18,14 +18,12 @@ class InformasiActivity : AppCompatActivity() {
         binding = ActivityInformasiBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Data informasi pemilu sebagai list string
         val informasiPemilu = arrayListOf(
             "Pemilu Presiden 2024 - 14 Februari 2024 - Indonesia",
             "Pemilu Legislatif 2024 - 17 April 2024 - Indonesia",
             "Pemilu Kepala Daerah 2024 - 27 November 2024 - Jakarta"
         )
 
-        // Menggunakan ArrayAdapter default untuk menampilkan data
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, informasiPemilu)
         binding.listViewInformasi.adapter = adapter
     }
