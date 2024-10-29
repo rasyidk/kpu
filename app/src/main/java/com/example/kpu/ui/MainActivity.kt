@@ -1,6 +1,7 @@
 package com.example.kpu.ui
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -9,15 +10,19 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.kpu.R
 import com.example.kpu.adapter.MenuAdapter
 import com.example.kpu.databinding.ActivityMainBinding
+import com.example.kpu.helper.DatabaseHelper
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var sharedPreferences: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -47,10 +52,21 @@ class MainActivity : AppCompatActivity() {
                     startActivity(Intent(this, LihatDataActivity::class.java))
                 }
                 3 -> {
-
-                    finish()
+                    handleLogout()
                 }
             }
         }
+    }
+    private fun handleLogout() {
+        // Clear login status from SharedPreferences
+        with(sharedPreferences.edit()) {
+            putBoolean("is_logged_in", false)
+            remove("username") // Optionally remove stored username
+            apply()
+        }
+
+        // Redirect to LoginActivity
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
     }
 }
